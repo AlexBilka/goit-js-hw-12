@@ -1,7 +1,8 @@
-const API_KEY = '21675808-1204a02bf0a9f212ef3ae3caa';
-const BASE_URL = 'https://pixabay.com';
+import axios from 'axios';
 
-export function getItems(query) {
+export async function getPixabayItems(query, page) {
+  axios.defaults.baseURL = 'https://pixabay.com/api/';
+  const API_KEY = '21675808-1204a02bf0a9f212ef3ae3caa';
   const params = {
     key: API_KEY,
     q: query,
@@ -10,11 +11,9 @@ export function getItems(query) {
     safesearch: 'true',
   };
   const options = new URLSearchParams(params);
-  return fetch(`${BASE_URL}/api/?${options}`).then(response => {
-    if (!response.ok) {
-      throw new Error('Ups... The word is wrong!');
-    }
 
-    return response.json();
-  });
+  return await axios
+    .get(`?${options}`)
+    .then(response => response.data)
+    .catch(error => console.log(error));
 }

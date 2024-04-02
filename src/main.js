@@ -6,7 +6,7 @@ import 'izitoast/dist/css/iziToast.min.css';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
-import { getItems } from './js/pixabay-api';
+import { getPixabayItems } from './js/pixabay-api';
 import { galleryMarkup } from './js/render-functions';
 
 // ============= document elements =============
@@ -36,7 +36,7 @@ function handleSubmit(event) {
   const query = event.target['queryInput'].value.trim();
 
   if (query !== '') {
-    getItems(query)
+    getPixabayItems(query)
       // -----------------------------------------
       .then(response => {
         if (response.hits.length === 0) {
