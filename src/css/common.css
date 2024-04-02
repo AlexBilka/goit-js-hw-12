@@ -146,6 +146,7 @@ p span {
 .form-container {
   display: flex;
   justify-content: center;
+  margin-bottom: 20px;
 }
 
 .form {
