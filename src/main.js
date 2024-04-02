@@ -14,8 +14,10 @@ import { galleryMarkup } from './js/render-functions';
 const form = document.querySelector('.form');
 const gallery = document.querySelector('.gallery');
 const loader = document.querySelector('.loader');
+const loadMorebtn = document.querySelector('.load-more');
 
 form.addEventListener('submit', handleSubmit);
+loadMorebtn.addEventListener('click', handleClick);
 
 // =========== SimpleLightbox initialization ===========
 
@@ -26,17 +28,22 @@ const lightbox = new SimpleLightbox('.gallery-link', {
   overlayOpacity: 0.7,
 });
 
+let page = 1;
+let query = '';
+
 // ============= Submit function =============
 
 function handleSubmit(event) {
   event.preventDefault();
 
+  loadMorebtn.classList.add('is-hidden');
   loaderPlay();
   gallery.innerHTML = ''; // Clear gallery
-  const query = event.target['queryInput'].value.trim();
+  page = 1;
+  query = event.target['queryInput'].value.trim();
 
   if (query !== '') {
-    getPixabayItems(query)
+    getPixabayItems(query, page)
       // -----------------------------------------
       .then(response => {
         if (response.hits.length === 0) {
@@ -47,13 +54,16 @@ function handleSubmit(event) {
           });
         }
         gallery.innerHTML = galleryMarkup(response.hits); // Create markup
+        if (response.total > 15) {
+          loadMorebtn.classList.remove('is-hidden');
+        }
         lightbox.refresh();
       })
-      // -----------------------------------------
+
       .catch(error => {
         console.log(error);
       })
-      // -----------------------------------------
+
       .finally(() => {
         loaderStop();
       });
@@ -61,13 +71,52 @@ function handleSubmit(event) {
     // --------------------------------------------
   } else {
     loaderStop();
-    iziToast.error({
+    iziToast.info({
       message: 'Please, enter a query, for example "cats"',
-      position: 'topRight',
+      position: 'topLeft',
     });
   }
 
   event.currentTarget.reset(); // clear input value
+}
+
+// ============= Load more functions =============
+
+function handleClick() {
+  loaderPlay();
+  page += 1;
+
+  getPixabayItems(query, page)
+    // --------------------------------------------
+    .then(response => {
+      const lastPage = Math.ceil(response.total / 15);
+      gallery.insertAdjacentHTML('beforeend', galleryMarkup(response.hits)); // Create markup
+
+      const { height: cardHeight } = document
+        .querySelector('.gallery')
+        .firstElementChild.getBoundingClientRect();
+
+      window.scrollBy({
+        top: cardHeight * 2,
+        behavior: 'smooth',
+      });
+
+      if (lastPage === page) {
+        loadMorebtn.classList.add('is-hidden');
+        iziToast.info({
+          message: "We're sorry, but you've reached the end of search results.",
+          position: 'topLeft',
+        });
+      }
+    })
+
+    .catch(error => {
+      console.log(error);
+    })
+
+    .finally(() => {
+      loaderStop();
+    });
 }
 
 // ============= Loader functions =============

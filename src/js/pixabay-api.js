@@ -6,6 +6,8 @@ export async function getPixabayItems(query, page) {
   const params = {
     key: API_KEY,
     q: query,
+    page,
+    per_page: 15,
     image_type: 'photo',
     orientation: 'horizontal',
     safesearch: 'true',
