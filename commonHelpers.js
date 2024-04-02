@@ -1,0 +1,12 @@
+import{S as p,i}from"./assets/vendor-5b791d57.js";(function(){const e=document.createElement("link").relList;if(e&&e.supports&&e.supports("modulepreload"))return;for(const t of document.querySelectorAll('link[rel="modulepreload"]'))a(t);new MutationObserver(t=>{for(const r of t)if(r.type==="childList")for(const n of r.addedNodes)n.tagName==="LINK"&&n.rel==="modulepreload"&&a(n)}).observe(document,{childList:!0,subtree:!0});function s(t){const r={};return t.integrity&&(r.integrity=t.integrity),t.referrerPolicy&&(r.referrerPolicy=t.referrerPolicy),t.crossOrigin==="use-credentials"?r.credentials="include":t.crossOrigin==="anonymous"?r.credentials="omit":r.credentials="same-origin",r}function a(t){if(t.ep)return;t.ep=!0;const r=s(t);fetch(t.href,r)}})();const f="21675808-1204a02bf0a9f212ef3ae3caa",d="https://pixabay.com";function m(o){const e={key:f,q:o,image_type:"photo",orientation:"horizontal",safesearch:"true"},s=new URLSearchParams(e);return fetch(`${d}/api/?${s}`).then(a=>{if(!a.ok)throw new Error("Ups... The word is wrong!");return a.json()})}function y(o){return o.map(e=>`<li class="gallery-item">
+                <a class="gallery-link" href='${e.largeImageURL}'>
+                  <img class="gallery-image" src='${e.webformatURL}' alt='${e.tags}' />
+                </a>
+                <div class="stats">
+                  <p><span>Likes</span>${e.likes}</p>
+                  <p><span>Views</span>${e.views}</p>
+                  <p><span>Comments</span>${e.comments}</p>
+                  <p><span>Downloads</span>${e.downloads}</p>
+                </div>
+              </li>`).join("")}const g=document.querySelector(".form"),l=document.querySelector(".gallery"),u=document.querySelector(".loader");g.addEventListener("submit",L);const h=new p(".gallery-link",{captionsData:"alt",captionDelay:250,overlay:!0,overlayOpacity:.7});function L(o){o.preventDefault(),w(),l.innerHTML="";const e=o.target.queryInput.value.trim();e!==""?m(e).then(s=>{if(s.hits.length===0)return i.error({message:"Sorry, there are no images matching your search query. Please try again!",position:"topRight"});l.innerHTML=y(s.hits),h.refresh()}).catch(s=>{console.log(s)}).finally(()=>{c()}):(c(),i.error({message:'Please, enter a query, for example "cats"',position:"topRight"})),o.currentTarget.reset()}function w(){u.classList.remove("is-hidden")}function c(){u.classList.add("is-hidden")}
+//# sourceMappingURL=commonHelpers.js.map
