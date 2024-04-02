@@ -1,0 +1,15 @@
+.nav-list {
+  display: flex;
+  gap: 40px;
+  /* justify-content: center; */
+}
+
+.nav-link {
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+}
+
+[alt='GO-IT logo'] {
+  width: 170px;
+}
