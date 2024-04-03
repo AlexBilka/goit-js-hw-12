@@ -14,8 +14,10 @@ export async function getPixabayItems(query, page) {
   };
   const options = new URLSearchParams(params);
 
-  return await axios
-    .get(`?${options}`)
-    .then(response => response.data)
-    .catch(error => console.log(error));
+  const res = await axios.get(`?${options}`);
+  try {
+    return res.data;
+  } catch (err) {
+    console.log(err);
+  }
 }
