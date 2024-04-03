@@ -43,9 +43,9 @@ async function handleSubmit(event) {
   query = event.target['queryInput'].value.trim();
 
   if (query !== '') {
-    const res = await getPixabayItems(query, page);
     // --------------------------------------------
     try {
+      const res = await getPixabayItems(query, page);
       if (res.hits.length === 0) {
         loaderStop();
         return iziToast.error({
